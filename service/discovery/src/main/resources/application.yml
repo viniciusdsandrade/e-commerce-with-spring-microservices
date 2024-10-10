@@ -1,0 +1,5 @@
+spring:
+  config:
+    import: optional:configserver:http://localhost:8888 # Configura o Config Server opcionalmente, para buscar configurações externas se disponível no endereço 'http://localhost:8888'.
+  application:
+    name: discovery-service # Define o nome da aplicação como 'discovery-service', importante para a identificação no Eureka Server e também para o Config Server.

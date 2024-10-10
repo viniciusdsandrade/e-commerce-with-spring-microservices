@@ -1,0 +1,12 @@
+server:
+  port: 8888 # A aplicação Config Server roda na porta 8888.
+spring:
+  profiles:
+    active: native  # Define o perfil ativo como 'native', o que indica que o Config Server vai buscar configurações localmente.
+  application:
+    name: config-server  # Define o nome da aplicação como 'config-client', usado para identificar o cliente no Config Server.
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/configurations # No modo 'native', essa configuração aponta para o diretório no classpath onde o Config Server buscará os arquivos de configuração.
