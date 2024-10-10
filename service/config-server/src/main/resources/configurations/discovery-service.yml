@@ -2,9 +2,10 @@ eureka:
   instance:
     hostname: localhost  # Define o hostname da instância do Eureka Client como 'localhost'. Isso é útil para que o servidor e os clientes saibam qual é o nome de host a ser usado para localizar a instância.
   client:
-    registerWithEureka: false  # Indica que o Eureka Client deve se registrar no Eureka Server. Mesmo sendo um servidor, o Eureka pode atuar também como cliente.
-    fetchRegistry: false  # Define que o Eureka Client deve buscar o registro de outros serviços do Eureka Server, necessário para poder descobrir outros microsserviços.
+    registerWithEureka: false  # Indica que o Eureka Server não deve se registrar nele mesmo.
+    fetchRegistry: false  # Define que o Eureka Server não deve buscar o registro de outros serviços. Apenas clientes buscarão o registro.
     serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/  # Especifica a URL de registro do Eureka Server. Aqui, está usando o hostname definido anteriormente (${eureka.instance.hostname})
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/  # Especifica a URL de registro do Eureka Server. Aqui, está usando o hostname definido anteriormente (${eureka.instance.hostname}).
+
 server:
-  port: 8761  # E a porta configurada no servidor (${server.port}). Nesse caso, o Eureka Server rodará na porta padrão (8761) e estará acessível via HTTPS.
+  port: 8761  # Define a porta na qual o Eureka Server vai rodar. O servidor estará disponível na porta padrão do Eureka, 8761.
