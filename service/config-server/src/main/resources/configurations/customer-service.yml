@@ -9,4 +9,4 @@ spring:
       authentication-database: admin  # Banco de dados utilizado para autenticar o usuário (admin).
 
 server:
-  port: 8090  # Define a porta na qual o serviço 'customer-service' vai rodar. Aqui, o microserviço estará disponível na porta 8090.
+  port: 9091  # Define a porta na qual o serviço 'customer-service' vai rodar. Aqui, o microserviço estará disponível na porta 9091.

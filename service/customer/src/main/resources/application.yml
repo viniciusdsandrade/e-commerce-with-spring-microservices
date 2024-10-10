@@ -1,15 +1,5 @@
 spring:
+  config:
+    import: optional:configserver:http://localhost:8888 # Configura o Config Server opcionalmente, para buscar configuraÃ§Ãµes externas se disponÃ­vel no endereÃ§o 'http://localhost:8888'.
   application:
-    name: customer-service  # Define o nome da aplicação como 'customer-service', responsável por gerenciar informações dos clientes.
-
-  data:
-    mongodb:
-      username: admin  # Define o nome de usuário para conectar ao MongoDB.
-      password: admin  # Define a senha para o usuário do MongoDB.
-      host: localhost  # Define o host do MongoDB. No caso, está rodando localmente.
-      port: 27017  # Porta padrão do MongoDB, usada para estabelecer a conexão.
-      database: customer  # Nome do banco de dados onde as informações dos clientes serão armazenadas.
-      authentication-database: admin  # Banco de dados utilizado para autenticar o usuário (admin).
-
-server:
-  port: 8090  # Define a porta na qual o serviço 'customer-service' vai rodar. Aqui, o microserviço estará disponível na porta 8090.
+    name: customer-service # Define o nome da aplicaÃ§Ã£o como 'customer-service', importante para a identificaÃ§Ã£o no Eureka Server e tambÃ©m para o Config Server.

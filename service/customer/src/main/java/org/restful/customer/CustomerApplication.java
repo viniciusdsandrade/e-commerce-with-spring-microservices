@@ -13,7 +13,7 @@ import static org.springframework.boot.SpringApplication.run;
  * Delete) em dados de clientes, armazenados em um banco de dados MongoDB.
  *
  * <p>O microserviço se conecta a um banco de dados MongoDB e utiliza o banco
- * 'customer' para armazenar as informações dos clientes. Ele roda na porta 8090,
+ * 'customer' para armazenar as informações dos clientes. Ele roda na porta 8888,
  * conforme configurado no arquivo 'application.yml'.
  *
  * <p>Este microserviço pode ser integrado a outros serviços em uma arquitetura
