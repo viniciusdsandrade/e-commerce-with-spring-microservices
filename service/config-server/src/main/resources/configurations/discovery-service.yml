@@ -1,6 +1,7 @@
 eureka:
   instance:
-    hostname: localhost  # Define o hostname da instância do Eureka Client como 'localhost'. Isso é útil para que o servidor e os clientes saibam qual é o nome de host a ser usado para localizar a instância.
+    lease-renewal-interval-in-seconds: 5  # Intervalo entre os heartbeats (padrão: 30s)
+    lease-expiration-duration-in-seconds: 10  # Tempo antes que uma instância seja considerada down (padrão: 90s)
   client:
     registerWithEureka: false  # Indica que o Eureka Server não deve se registrar nele mesmo.
     fetchRegistry: false  # Define que o Eureka Server não deve buscar o registro de outros serviços. Apenas clientes buscarão o registro.

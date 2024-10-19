@@ -1,11 +1,8 @@
 server:
-  port: 9091  # Define a porta na qual o serviço 'customer-service' vai rodar. Aqui, o microserviço estará disponível na porta 9091.
+  port: 9091  # Porta na qual o serviço 'customer-service' vai rodar.
 spring:
   data:
     mongodb:
-      username: admin  # Define o nome de usuário para conectar ao MongoDB.
-      password: admin  # Define a senha para o usuário do MongoDB.
-      host: localhost  # Define o host do MongoDB. No caso, está rodando localmente, ou seja, o MongoDB está hospedado na máquina local.
-      port: 27017  # Porta padrão do MongoDB, usada para estabelecer a conexão.
-      database: customer  # Nome do banco de dados onde as informações dos clientes serão armazenadas.
-      authentication-database: admin  # Banco de dados utilizado para autenticar o usuário (admin).
+      name: e-commerce-with-spring-microservices
+      uri: ${MONGODB_URI}
+      port: 27017

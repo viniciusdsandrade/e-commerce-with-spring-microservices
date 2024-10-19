@@ -3,7 +3,9 @@ eureka:
     hostname: localhost
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://localhost:8761/eureka/
+    registry-fetch-interval-seconds: 10  # Intervalo de sincronização do cliente
+    initial-instance-info-replication-interval-seconds: 5  # Tempo para enviar a primeira replicação
 name:
   value: vinicius
 spring:
