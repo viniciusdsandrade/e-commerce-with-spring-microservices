@@ -1,3 +1,5 @@
+server:
+  port: 9091  # Define a porta na qual o serviço 'customer-service' vai rodar. Aqui, o microserviço estará disponível na porta 9091.
 spring:
   data:
     mongodb:
@@ -7,6 +9,3 @@ spring:
       port: 27017  # Porta padrão do MongoDB, usada para estabelecer a conexão.
       database: customer  # Nome do banco de dados onde as informações dos clientes serão armazenadas.
       authentication-database: admin  # Banco de dados utilizado para autenticar o usuário (admin).
-
-server:
-  port: 9091  # Define a porta na qual o serviço 'customer-service' vai rodar. Aqui, o microserviço estará disponível na porta 9091.
