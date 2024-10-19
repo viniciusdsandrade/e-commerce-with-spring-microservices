@@ -33,7 +33,6 @@ import static org.springframework.boot.SpringApplication.run;
 @EnableConfigServer
 @SpringBootApplication
 public class ConfigServerApplication {
-
 	public static void main(String[] args) {
 		run(ConfigServerApplication.class, args);
 	}

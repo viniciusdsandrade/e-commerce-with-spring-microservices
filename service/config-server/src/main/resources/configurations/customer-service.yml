@@ -1,8 +1,8 @@
 server:
   port: 9091  # Porta na qual o serviço 'customer-service' vai rodar.
+
 spring:
   data:
     mongodb:
-      name: e-commerce-with-spring-microservices
       uri: ${MONGODB_URI}
-      port: 27017
+      database: e-commerce-with-spring-microservices
