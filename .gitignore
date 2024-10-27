@@ -1,3 +1,4 @@
 .idea
 product.env
 customer.env
+mongo.env
