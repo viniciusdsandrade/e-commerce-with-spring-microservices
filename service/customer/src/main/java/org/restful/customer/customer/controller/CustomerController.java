@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.restful.customer.customer.dto.CustomerRequest;
 import org.restful.customer.customer.dto.CustomerResponse;
 import org.restful.customer.customer.service.CustomerService;
-import org.restful.customer.customer.service.impl.CustomerServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,25 +17,6 @@ import java.util.List;
 
 import static org.springframework.http.ResponseEntity.*;
 
-/**
- * Controlador REST para gerenciar operações relacionadas a clientes.
- *
- * <p>Esta classe define os endpoints da API para criar, atualizar, buscar, verificar existência e deletar clientes.
- * Utiliza o serviço {@code CustomerService} para realizar as operações de negócio.
- *
- * <p>Endpoints disponíveis:
- * <ul>
- *   <li>{@code POST /api/v1/customer}: Cria um novo cliente.</li>
- *   <li>{@code PUT /api/v1/customer}: Atualiza informações de um cliente existente.</li>
- *   <li>{@code GET /api/v1/customer}: Retorna a lista de todos os clientes.</li>
- *   <li>{@code GET /api/v1/customer/exits/{customer-id}}: Verifica se um cliente existe.</li>
- *   <li>{@code GET /api/v1/customer/{customer-id}}: Retorna informações de um cliente específico.</li>
- *   <li>{@code DELETE /api/v1/customer/{customer-id}}: Deleta um cliente específico.</li>
- * </ul>
- *
- * @see CustomerService
- * @see CustomerServiceImpl
- */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/customer")
@@ -46,12 +26,7 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
-    /**
-     * Cria um novo cliente.
-     *
-     * @param customerDto Dados do cliente a ser criado.
-     * @return Identificador do cliente criado.
-     */
+
     @Operation(summary = "Criar um novo cliente", description = "Cria um novo cliente com os dados fornecidos.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Cliente criado com sucesso."),
@@ -64,12 +39,6 @@ public class CustomerController {
         return ok(customerService.createCustomer(customerDto));
     }
 
-    /**
-     * Atualiza informações de um cliente existente.
-     *
-     * @param customerDto Dados do cliente a serem atualizados.
-     * @return Resposta vazia indicando que a atualização foi aceita.
-     */
     @Operation(summary = "Atualizar um cliente", description = "Atualiza as informações de um cliente existente.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "202", description = "Atualização do cliente aceita."),
@@ -84,11 +53,6 @@ public class CustomerController {
         return accepted().build();
     }
 
-    /**
-     * Retorna a lista de todos os clientes.
-     *
-     * @return Lista de clientes.
-     */
     @Operation(summary = "Listar todos os clientes", description = "Retorna uma lista completa de todos os clientes cadastrados.")
     @ApiResponse(responseCode = "200", description = "Lista de clientes retornada com sucesso.")
     @GetMapping
@@ -96,12 +60,6 @@ public class CustomerController {
         return ok(customerService.findAllCustomers());
     }
 
-    /**
-     * Verifica se um cliente existe com o ID fornecido.
-     *
-     * @param customerId Identificador do cliente.
-     * @return {@code true} se o cliente existir, {@code false} caso contrário.
-     */
     @Operation(summary = "Verificar existência de um cliente", description = "Verifica se um cliente com o ID fornecido existe no sistema.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Cliente existe ou não."),
@@ -114,12 +72,6 @@ public class CustomerController {
         return ok(customerService.existsById(customerId));
     }
 
-    /**
-     * Retorna informações de um cliente específico.
-     *
-     * @param customerId Identificador do cliente.
-     * @return Informações detalhadas do cliente.
-     */
     @Operation(summary = "Obter informações de um cliente", description = "Retorna as informações detalhadas de um cliente específico com base no ID fornecido.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Informações do cliente retornadas com sucesso."),
@@ -132,12 +84,6 @@ public class CustomerController {
         return ok(customerService.findCustomerById(customerId));
     }
 
-    /**
-     * Deleta um cliente específico.
-     *
-     * @param customerId Identificador do cliente a ser deletado.
-     * @return Resposta vazia indicando que a deleção foi bem-sucedida.
-     */
     @Operation(summary = "Deletar um cliente", description = "Remove um cliente específico do sistema com base no ID fornecido.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Cliente deletado com sucesso."),

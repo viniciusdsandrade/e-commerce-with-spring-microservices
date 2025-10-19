@@ -28,9 +28,8 @@ public class ModifyCollections {
     private static final Logger logger = getLogger(ModifyCollections.class);
 
     public static void main(String[] args) {
-        // Carregar variáveis de ambiente do arquivo mongo.env
         Dotenv dotenv = configure()
-                .filename(ENVOLROLMENT) // Especifica o nome do arquivo
+                .filename(ENVOLROLMENT)
                 .load();
         String uri = dotenv.get(MONGODB_URI);
         String dbName = dotenv.get(DB_NAME);
@@ -41,19 +40,16 @@ public class ModifyCollections {
         }
 
         try {
-            // Configurar o MongoClient sem configurações SSL personalizadas
             MongoClientSettings settings = builder()
                     .applyConnectionString(new ConnectionString(uri))
                     .build();
 
             try (MongoClient mongoClient = create(settings)) {
-                MongoDatabase db = mongoClient.getDatabase(dbName); // Utiliza o dbName do env
+                MongoDatabase db = mongoClient.getDatabase(dbName);
 
-                // Executar um ping para verificar a conexão
                 db.runCommand(new Document("ping", 1));
                 System.out.println("Pinged your deployment. You successfully connected to MongoDB!");
 
-                // Verificar e criar coleções
                 criarColecaoComValidador(db, "tb_address", getAddressValidator());
                 criarColecaoComValidador(db, "tb_customer", getCustomerValidator());
                 criarColecaoComValidador(db, "tb_product", getProductValidator());
@@ -69,13 +65,6 @@ public class ModifyCollections {
         }
     }
 
-    /**
-     * Metodo genérico para criar uma coleção com validação de esquema.
-     *
-     * @param db          Instância do MongoDatabase
-     * @param nomeColecao Nome da coleção a ser criada
-     * @param validador   Documento com a validação de esquema
-     */
     private static void criarColecaoComValidador(MongoDatabase db, String nomeColecao, Document validador) {
         MongoIterable<String> colecoes = db.listCollectionNames();
         boolean existe = false;
@@ -104,9 +93,6 @@ public class ModifyCollections {
         }
     }
 
-    /**
-     * Validador para a coleção tb_address.
-     */
     private static Document getAddressValidator() {
         return new Document("$jsonSchema",
                 new Document("bsonType", "object")
@@ -123,9 +109,6 @@ public class ModifyCollections {
         );
     }
 
-    /**
-     * Validador para a coleção tb_customer.
-     */
     private static Document getCustomerValidator() {
         return new Document("$jsonSchema",
                 new Document("bsonType", "object")
@@ -144,9 +127,6 @@ public class ModifyCollections {
         );
     }
 
-    /**
-     * Validador para a coleção tb_product.
-     */
     private static Document getProductValidator() {
         return new Document("$jsonSchema",
                 new Document("bsonType", "object")
@@ -170,9 +150,6 @@ public class ModifyCollections {
         );
     }
 
-    /**
-     * Validador para a coleção tb_order.
-     */
     private static Document getOrderValidator() {
         return new Document("$jsonSchema",
                 new Document("bsonType", "object")
@@ -188,9 +165,6 @@ public class ModifyCollections {
         );
     }
 
-    /**
-     * Validador para a coleção tb_order_line.
-     */
     private static Document getOrderLineValidator() {
         return new Document("$jsonSchema",
                 new Document("bsonType", "object")
@@ -207,9 +181,6 @@ public class ModifyCollections {
         );
     }
 
-    /**
-     * Validador para a coleção tb_payment.
-     */
     private static Document getPaymentValidator() {
         return new Document("$jsonSchema",
                 new Document("bsonType", "object")
@@ -229,9 +200,6 @@ public class ModifyCollections {
         );
     }
 
-    /**
-     * Validador para a coleção tb_notification.
-     */
     private static Document getNotificationValidator() {
         return new Document("$jsonSchema",
                 new Document("bsonType", "object")

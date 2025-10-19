@@ -1,4 +1,5 @@
 package org.restful.customer.handler;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.ws.rs.BadRequestException;
 import org.restful.customer.exception.CustomerNotFoundException;
@@ -22,25 +23,12 @@ import static org.springframework.http.HttpStatus.*;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    /**
-     * Manipula a exceção {@link BadRequestException}, que é lançada quando uma requisição malformada
-     * ou inválida é recebida pelo servidor.
-     * <p>
-     * Esta exceção indica que a requisição não pôde ser processada devido a um erro na sintaxe
-     * ou no formato dos dados fornecidos. O metodo encapsula os detalhes do erro em um objeto
-     * {@link ErrorDetails} e retorna uma resposta com status HTTP 400 (Bad Request),
-     * indicando que a requisição não pôde ser entendida ou processada pelo servidor.
-     * </p>
-     *
-     * @param exception  A exceção de requisição malformada, que contém a mensagem de erro a ser retornada ao cliente.
-     * @param webRequest O objeto {@link WebRequest} que fornece informações adicionais sobre a requisição que causou a exceção.
-     * @return Uma {@link ResponseEntity} contendo uma lista com os detalhes do erro encapsulados em {@link ErrorDetails}
-     * e o status HTTP 400 (Bad Request).
-     */
     @ExceptionHandler(BadRequestException.class)
     @Schema(description = "Manipula a exceção BadRequestException, lançada quando uma requisição malformada é recebida.")
-    public ResponseEntity<List<ErrorDetails>> handleBadRequestException(BadRequestException exception,
-                                                                        WebRequest webRequest) {
+    public ResponseEntity<List<ErrorDetails>> handleBadRequestException(
+            BadRequestException exception,
+            WebRequest webRequest
+    ) {
         ErrorDetails errorDetails = new ErrorDetails(
                 now(),
                 exception.getMessage(),
@@ -51,67 +39,31 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(List.of(errorDetails), BAD_REQUEST);
     }
 
-    /**
-     * Manipula a exceção {@link MethodArgumentNotValidException}, que é lançada quando ocorre um erro de validação
-     * dos dados de entrada de um metodo de um controlador.
-     * <p>
-     * Esta exceção é comum em operações onde os dados fornecidos pelo cliente, através do corpo da requisição
-     * ou parâmetros de URL,  não atendem aos requisitos de validação definidos pelas anotações do Bean Validation,
-     * como @NotNull, @NotBlank, @Size, etc.
-     * </p>
-     * <p>
-     * O metodo captura a exceção, extrai os detalhes dos erros de validação e os encapsula em uma lista de
-     * objetos {@link ValidationErrorDetails}. Cada objeto ValidationErrorDetails contém informações específicas
-     * sobre um erro de validação, como o campo que causou o erro, a mensagem de erro e o código de erro.
-     * </p>
-     * <p>
-     * Em seguida, o metodo retorna uma resposta HTTP com o status 400 (Bad Request) e a lista de erros de
-     * validação no corpo da resposta, no formato JSON. Essa resposta informa ao cliente quais campos da requisição
-     * são inválidos e quais são as mensagens de erro correspondentes, permitindo que o cliente corrija os erros e
-     * reenvie a requisição.
-     * </p>
-     *
-     * @param exception A exceção {@link MethodArgumentNotValidException} que contém os detalhes dos erros de validação.
-     * @param request   O objeto {@link WebRequest} que fornece informações adicionais sobre a requisição que causou a exceção.
-     * @return Uma {@link ResponseEntity} contendo uma lista de {@link ValidationErrorDetails} e o status HTTP 400 (Bad Request).
-     * @see ValidationErrorDetails
-     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @Schema(description = "Manipula a exceção MethodArgumentNotValidException, lançada em caso de erros de validação.")
-    public ResponseEntity<List<ValidationErrorDetails>> handleValidationException(MethodArgumentNotValidException exception,
-                                                                                  WebRequest request) {
+    public ResponseEntity<List<ValidationErrorDetails>> handleValidationException(
+            MethodArgumentNotValidException exception,
+            WebRequest request
+    ) {
         List<ValidationErrorDetails> errors = new ArrayList<>();
         for (FieldError error : exception.getBindingResult().getFieldErrors()) {
             errors.add(new ValidationErrorDetails(
                     now(),
-                    error.getDefaultMessage(), // Mensagem mais amigável do Bean Validation
+                    error.getDefaultMessage(),
                     request.getDescription(false),
                     "METHOD_ARGUMENT_NOT_VALID_ERROR",
-                    error.getField() // Nome do campo com erro
+                    error.getField()
             ));
         }
         return ResponseEntity.status(BAD_REQUEST).body(errors);
     }
 
-    /**
-     * Manipula a exceção {@link IllegalArgumentException}, que é lançada quando um argumento inválido
-     * é passado para um metodo.
-     * <p>
-     * Esta exceção indica que os dados fornecidos pelo cliente na requisição não são válidos
-     * para a operação solicitada. O metodo encapsula os detalhes do erro em um objeto
-     * {@link ErrorDetails} e retorna uma resposta com status HTTP 400 (Bad Request),
-     * indicando que a requisição não pôde ser processada devido a dados inválidos.
-     * </p>
-     *
-     * @param exception  A exceção de argumento inválido, que contém a mensagem de erro a ser retornada ao cliente.
-     * @param webRequest O objeto {@link WebRequest} que fornece informações adicionais sobre a requisição que causou a exceção.
-     * @return Uma {@link ResponseEntity} contendo uma lista com os detalhes do erro encapsulados em {@link ErrorDetails}
-     * e o status HTTP 400 (Bad Request).
-     */
     @ExceptionHandler(IllegalArgumentException.class)
     @Schema(description = "Manipula a exceção IllegalArgumentException, lançada quando um argumento inválido é passado.")
-    public ResponseEntity<List<ErrorDetails>> handleIllegalArgumentException(IllegalArgumentException exception,
-                                                                             WebRequest webRequest) {
+    public ResponseEntity<List<ErrorDetails>> handleIllegalArgumentException(
+            IllegalArgumentException exception,
+            WebRequest webRequest
+    ) {
         ErrorDetails errorDetails = new ErrorDetails(
                 now(),
                 exception.getMessage(),
@@ -124,8 +76,10 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CustomerNotFoundException.class)
     @Schema(description = "Manipula a exceção CustomerNotFoundException, lançada quando um cliente não é encontrado.")
-    public ResponseEntity<List<ErrorDetails>> handleCustomerNotFoundException(CustomerNotFoundException exception,
-                                                                             WebRequest webRequest) {
+    public ResponseEntity<List<ErrorDetails>> handleCustomerNotFoundException(
+            CustomerNotFoundException exception,
+            WebRequest webRequest
+    ) {
         ErrorDetails errorDetails = new ErrorDetails(
                 now(),
                 exception.getMessage(),
@@ -136,33 +90,19 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(List.of(errorDetails), NOT_FOUND);
     }
 
-    /**
-     * Manipula a exceção {@link DuplicateEntryException}, que é lançada quando há uma tentativa
-     * de inserir uma entrada duplicada em uma entidade que deve ter valores únicos.
-     * <p>
-     * Esta exceção pode ser lançada, por exemplo, quando se tenta cadastrar um CPF ou CNPJ já existente
-     * no sistema. O metodo encapsula os detalhes do erro em um objeto {@link ErrorDetails} e retorna uma
-     * resposta com status HTTP 409 (Conflict), indicando que a requisição conflita com o estado atual
-     * do recurso.
-     * </p>
-     *
-     * @param exception  A exceção de entrada duplicada, que contém a mensagem de erro a ser retornada ao cliente.
-     * @param webRequest O objeto {@link WebRequest} que fornece informações adicionais sobre a requisição que causou a exceção.
-     * @return Uma {@link ResponseEntity} contendo uma lista com os detalhes do erro encapsulados em {@link ErrorDetails}
-     * e o status HTTP 409 (Conflict).
-     */
     @ExceptionHandler(DuplicateEntryException.class)
     @Schema(description = "Manipula a exceção DuplicateEntryException, lançada quando há uma tentativa de inserir uma entrada duplicada.")
-    public ResponseEntity<List<ErrorDetails>> handleDuplicateEntryException(DuplicateEntryException exception,
-                                                                            WebRequest webRequest) {
+    public ResponseEntity<List<ErrorDetails>> handleDuplicateEntryException(
+            DuplicateEntryException exception,
+            WebRequest webRequest
+    ) {
         List<ErrorDetails> errors = new ArrayList<>();
         String[] mensagens = exception.getMessage().split("\\n");
 
-        // Cria um ErrorDetails para cada mensagem de erro
         for (String mensagem : mensagens) {
             errors.add(new ErrorDetails(
                     now(),
-                    mensagem.trim(), // Remove espaços em branco no início e no final da mensagem
+                    mensagem.trim(),
                     webRequest.getDescription(false),
                     "DUPLICATE_ENTRY"
             ));
@@ -171,31 +111,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(CONFLICT).body(errors);
     }
 
-    /**
-     * Manipula exceções genéricas do tipo {@link Exception}, que representam erros inesperados
-     * que podem ocorrer durante o processamento de uma requisição.
-     * <p>
-     * Este metodo atua como um "catch-all" para exceções não tratadas especificamente por outros
-     * metodos de manipulação de exceções. Ele captura qualquer exceção do tipo Exception e retorna
-     * uma resposta com status HTTP 500 (Internal Server Error), indicando que houve um erro interno
-     * no servidor que impediu o processamento da requisição.
-     * </p>
-     * <p>
-     * O metodo encapsula os detalhes do erro em um objeto {@link ErrorDetails} e retorna uma resposta
-     * com a mensagem "Erro interno no servidor" e o status HTTP 500. Essa resposta informa ao
-     * cliente que houve um problema no servidor, mas não expõe detalhes específicos sobre a causa
-     * do erro, por questões de segurança e para evitar vazamento de informações sensíveis.
-     * </p>
-     *
-     * @param exception  A exceção genérica que representa o erro interno no servidor.
-     * @param webRequest O objeto {@link WebRequest} que fornece informações adicionais sobre a requisição que causou a exceção.
-     * @return Uma {@link ResponseEntity} contendo uma lista com os detalhes do erro encapsulados em {@link ErrorDetails}
-     * e o status HTTP 500 (Internal Server Error).
-     */
     @ExceptionHandler(HttpServerErrorException.InternalServerError.class)
     @Schema(description = "Manipula exceções genéricas, representando erros inesperados durante o processamento da requisição.")
-    public ResponseEntity<List<ErrorDetails>> handleGlobalException(Exception exception,
-                                                                    WebRequest webRequest) {
+    public ResponseEntity<List<ErrorDetails>> handleGlobalException(
+            Exception exception,
+            WebRequest webRequest
+    ) {
         ErrorDetails errorDetails = new ErrorDetails(
                 now(),
                 exception.getMessage(),
@@ -206,29 +127,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(List.of(errorDetails), INTERNAL_SERVER_ERROR);
     }
 
-    /**
-     * Manipula exceções que indicam que uma funcionalidade não está implementada,
-     * correspondente ao código de status HTTP 501 (Not Implemented).
-     * <p>
-     * Este metodo captura exceções do tipo {@link UnsupportedOperationException}, que
-     * geralmente são lançadas quando um metodo ou recurso ainda não foi implementado
-     * na aplicação.
-     * </p>
-     * <p>
-     * O metodo encapsula os detalhes do erro em um objeto {@link ErrorDetails} e retorna uma resposta
-     * com a mensagem "Funcionalidade não implementada" e o status HTTP 501. Essa resposta informa ao
-     * cliente que a funcionalidade solicitada ainda não está disponível.
-     * </p>
-     *
-     * @param exception  A exceção que representa a funcionalidade não implementada.
-     * @param webRequest O objeto {@link WebRequest} que fornece informações adicionais sobre a requisição que causou a exceção.
-     * @return Uma {@link ResponseEntity} contendo uma lista com os detalhes do erro encapsulados em {@link ErrorDetails}
-     * e o status HTTP 501 (Not Implemented).
-     */
     @ExceptionHandler(UnsupportedOperationException.class)
     @Schema(description = "Manipula exceções que indicam que uma funcionalidade não está implementada.")
-    public ResponseEntity<List<ErrorDetails>> handleNotImplementedException(UnsupportedOperationException exception,
-                                                                            WebRequest webRequest) {
+    public ResponseEntity<List<ErrorDetails>> handleNotImplementedException(
+            UnsupportedOperationException exception,
+            WebRequest webRequest
+    ) {
         ErrorDetails errorDetails = new ErrorDetails(
                 now(),
                 exception.getMessage(),
